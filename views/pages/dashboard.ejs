@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mt-3">
+          <h3>Connected services</h3>
+          <div class="card mb-3 mt-3">
+            <div class="card-body">
+              <h5 class="card-title">YouTube Analytics API</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                Authentication: OAuth2
+              </h6>
+              <% if (google_connected) {%>
+              <p class="card-text text-success fw-bold">Status: Connected</p>
+              <% } else { %>
+              <p class="card-text text-danger fw-bold">Status: Disconnected</p>
+              <a href="<%= google_url %>">Login with Google</a>
+              <% } %>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Github API</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                Authentication: Personal access token
+              </h6>
+              <% if (github_connected) {%>
+              <p class="card-text text-success fw-bold">Status: Connected</p>
+              <p class="card-text fw-bold">Repo: <%= github_repo %></p>
+
+              <% } else { %>
+              <p class="card-text text-danger fw-bold">Status: Disconnected</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8 mt-3">
+          <h3>Log</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Service</th>
+                <th scope="col">KPIs sent</th>
+                <th scope="col">Metrics</th>
+                <th scope="col">Successful</th>
+                <th scope="col">Error message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let i = 0; i < data.length; i++) {%>
+              <tr>
+                <th scope="row">
+                  <%= new Date(data[i].createdAt).toLocaleString() %>
+                </th>
+                <td><%= data[i].service %></td>
+                <td><%= data[i].kpis %></td>
+                <td><%= data[i].metrics %></td>
+                <% if (data[i].successful) {%>
+                <td class="text-success">Successful</td>
+                <% } else {%>
+                <td class="text-danger">Unsuccessful</td>
+                <% } %>
+                <td><%= data[i].error %></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
